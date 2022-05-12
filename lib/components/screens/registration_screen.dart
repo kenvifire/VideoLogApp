@@ -1,11 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:my_video_log/components/capture_video_screen.dart';
-import 'package:my_video_log/components/rounded_button.dart';
-
-import '../constants.dart';
+import 'package:my_video_log/components/buttons/rounded_button.dart';
+import 'package:my_video_log/components/screens/home_screen.dart';
+import 'package:my_video_log/constants.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static String id = 'registration_screen';
@@ -84,7 +82,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   setState(() {
                     showSpinner = false;
                   });
-                  Navigator.pushNamed(context, CaptureVideoScreen.id);
+                  Navigator.pushNamed(context, HomeScreen.id);
 
                 } on FirebaseAuthException catch(e) {
                   if (e.code == 'weak-password') {

@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:my_video_log/components/screens/capture_video_screen.dart';
+import 'package:camera/camera.dart';
+import 'package:my_video_log/components/tabs/setting_tab.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  static String id = "home_screen";
+  final CameraDescription camera;
+  final User user;
+  const HomeScreen({Key? key, required this.camera, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +21,11 @@ class HomeScreen extends StatelessWidget {
             title: const Text("My Vide Logs"),
           ),
           bottomNavigationBar: menu(),
-          body: const TabBarView(
+          body: TabBarView(
             children: [
-              Icon(Icons.camera),
-              Icon(Icons.calendar_month),
-              Icon( Icons.settings),
+              CaptureVideoScreen(camera: camera),
+              const Icon(Icons.calendar_month),
+              SettingTab(user: user),
             ],
           ),
 
@@ -38,7 +45,7 @@ class HomeScreen extends StatelessWidget {
         indicatorColor: Colors.blue,
         tabs: [
           Tab(
-            text: "Camera",
+            text: "New Video",
             icon: Icon(Icons.camera_alt),
           ),
           Tab(

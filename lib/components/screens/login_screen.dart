@@ -1,11 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:my_video_log/components/capture_video_screen.dart';
-import 'package:my_video_log/components/rounded_button.dart';
-
-import '../constants.dart';
+import 'package:my_video_log/components/screens/capture_video_screen.dart';
+import 'package:my_video_log/components/buttons/rounded_button.dart';
+import 'package:my_video_log/components/screens/home_screen.dart';
+import 'package:my_video_log/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
@@ -96,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 try {
                   final user = await _auth.signInWithEmailAndPassword(
                       email: email, password: password);
-                  Navigator.pushNamed(context, CaptureVideoScreen.id);
+                  Navigator.pushNamed(context, HomeScreen.id);
                   setState(() {
                     showSpinner = false;
                   });

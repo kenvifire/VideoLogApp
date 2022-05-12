@@ -3,6 +3,8 @@ import 'package:camera/camera.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:video_player/video_player.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+
 
 class CaptureVideoScreen extends StatefulWidget {
   static String id = "capture_video_screen";
@@ -41,7 +43,6 @@ class CaptureVideoState extends State<CaptureVideoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Take a picture'),),
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
@@ -149,6 +150,12 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
             return VideoPlayer(_controller);
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          GallerySaver.saveVideo(widget.videoPath);
+        },
+        child: const Icon(Icons.save)
       ),
     );
 
