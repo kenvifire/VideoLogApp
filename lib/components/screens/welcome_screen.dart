@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import '../buttons/rounded_button.dart';
 import 'package:my_video_log/components/screens/login_screen.dart';
-import 'registration_screen.dart';
+import 'package:my_video_log/components/screens/registration_screen.dart';
+import 'package:get_it/get_it.dart';
 
+final sl = GetIt.instance;
 class WelcomeScreen extends StatefulWidget {
   static String id = 'welcome_screen';
 
@@ -16,6 +18,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
