@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:my_video_log/service/video_log_service.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:video_player/video_player.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:get_it/get_it.dart';
 
+final sl = GetIt.instance;
 
 class CaptureVideoScreen extends StatefulWidget {
   static String id = "capture_video_screen";
@@ -154,6 +157,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           GallerySaver.saveVideo(widget.videoPath);
+          sl.get<VideoLogService>().addVideoLogRecord(widget.videoPath, DateTime.now());
         },
         child: const Icon(Icons.save)
       ),

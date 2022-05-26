@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_video_log/service/camera_service.dart';
 import 'package:my_video_log/service/user_service.dart';
+import 'package:my_video_log/service/video_log_service.dart';
 
 late List<CameraDescription> cameras;
 late User? user;
@@ -47,4 +48,5 @@ class MyVideLogApp extends StatelessWidget {
 void setup() {
   sl.registerSingleton<UserService>(UserService());
   sl.registerSingleton<CameraService>(CameraService());
+  sl.registerSingleton<VideoLogService>(VideoLogService());
 }
