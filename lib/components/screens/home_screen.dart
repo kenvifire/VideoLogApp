@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_video_log/components/screens/capture_video_screen.dart';
-import 'package:camera/camera.dart';
 import 'package:my_video_log/components/tabs/calender_tab.dart';
 import 'package:my_video_log/components/tabs/settings_tab.dart';
 import 'package:get_it/get_it.dart';
@@ -17,13 +16,16 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: 3,
+
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.blueAccent,
             title: const Text("My Vide Logs"),
+            automaticallyImplyLeading: false,
           ),
           bottomNavigationBar: menu(),
           body: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               CaptureVideoScreen(camera: sl.get<CameraService>().getFirstCamera()),
               const CalenderTab(),

@@ -139,7 +139,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         backgroundColor: Colors.black26,
         actions: [
           IconButton(onPressed: () {
-            print('do something with the file');
           }, icon: const Icon(Icons.check))
         ],
       ),

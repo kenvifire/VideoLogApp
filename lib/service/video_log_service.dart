@@ -1,13 +1,13 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:my_video_log/components/domains/log_record.dart';
 import 'package:my_video_log/service/user_service.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:get_it/get_it.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 class VideoLogService {
   final _storageRef = FirebaseStorage.instance.ref();
@@ -52,10 +52,12 @@ class VideoLogService {
 
   addVideoLogRecord(String videoPath, DateTime date) async {
       Uint8List? thumbnail = await getThumbnail(videoPath);
-      String? downloadUrl = await upload(thumbnail!, "test.jpeg");
+      String id = const Uuid().v4();
+      String? downloadUrl = await upload(thumbnail!, "$id.jpeg");
 
       final uid = _sl.get<UserService>().getUser()!.uid;
       final record = <String, dynamic> {
+        "id":id,
         "uid": uid,
         "downloadUrl": downloadUrl!,
         "date": date,
@@ -75,13 +77,35 @@ class VideoLogService {
       }
   }
 
-  loadRecords() async {
+  removeRecord(String recordId) async {
     final uid = _sl.get<UserService>().getUser()!.uid;
-    return await _db.collection('video_logs').doc(uid).get();
+
+    final data = await _db.collection('video_logs').doc(uid).get();
+    final videoLogs = data.data() as Map<String, dynamic>;
+
+    final records = videoLogs['logs'] as List<dynamic>;
+    records.removeWhere((element) => element['id'] == recordId);
+    try {
+      _db.collection('video_logs/').doc(uid).update(
+          {
+            'logs': records
+          }
+      );
+    } catch(error) {
+      if(kDebugMode) {
+        print("add record error");
+        print(error);
+      }
+    }
   }
 
+  Future<List<LogRecord>> loadRecords() async {
+    final uid = _sl.get<UserService>().getUser()!.uid;
+    final data = await _db.collection('video_logs').doc(uid).get();
+    final videoLogs = data.data() as Map<String, dynamic>;
 
-
-
+    final records = videoLogs['logs'] as List<dynamic>;
+    return records.map((e) => LogRecord(e['id'], e['date'].toDate(), e['videoPath'], e['downloadUrl'])).toList();
+  }
 
 }
