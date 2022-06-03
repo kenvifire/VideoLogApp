@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:my_video_log/service/video_log_service.dart';
+import 'package:my_video_log/components/screens/video_player_screen.dart';
 import 'dart:async';
-import 'dart:io';
-import 'package:video_player/video_player.dart';
-import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get_it/get_it.dart';
-
-final sl = GetIt.instance;
 
 class CaptureVideoScreen extends StatefulWidget {
   static String id = "capture_video_screen";
@@ -30,8 +25,8 @@ class CaptureVideoState extends State<CaptureVideoScreen> {
   void initState() {
     super.initState();
     _controller = CameraController(
-      widget.camera,
-      ResolutionPreset.medium
+        widget.camera,
+        ResolutionPreset.medium
     );
 
     _initializeControllerFuture = _controller.initialize();
@@ -49,7 +44,7 @@ class CaptureVideoState extends State<CaptureVideoScreen> {
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
-          if(snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.connectionState == ConnectionState.done) {
             return CameraPreview(_controller);
           } else {
             return const Center(child: CircularProgressIndicator(),);
@@ -60,7 +55,7 @@ class CaptureVideoState extends State<CaptureVideoScreen> {
         onPressed: () async {
           try {
             await _initializeControllerFuture;
-            if(!_isCapturing) {
+            if (!_isCapturing) {
               await _controller.startVideoRecording();
               setState(() {
                 _isCapturing = true;
@@ -72,102 +67,19 @@ class CaptureVideoState extends State<CaptureVideoScreen> {
               });
 
               await Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => VideoPlayerScreen(
-                    videoPath: file.path
-                  ))
+                  MaterialPageRoute(builder: (context) =>
+                      VideoPlayerScreen(
+                          videoPath: file.path
+                      ))
               );
             }
-
-          } catch(e) {
+          } catch (e) {
             print(e.toString());
           }
         },
-        child: _isCapturing? const Icon(Icons.camera) : const Icon(Icons.stop_circle_outlined),
+        child: _isCapturing ? const Icon(Icons.camera) : const Icon(
+            Icons.stop_circle_outlined),
       ),
     );
   }
 }
-
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-
-  const DisplayPictureScreen({Key? key, required this.imagePath}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Display the Picture')),
-      body: Image.file(File(imagePath)),
-    );
-  }
-}
-
-class VideoPlayerScreen extends StatefulWidget {
-  final String videoPath;
-
-  const VideoPlayerScreen({Key? key, required this.videoPath}) : super(key: key);
-
-
-  @override
-  _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
-
-}
-
-class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    
-  }
-
-  Future _initVideoPlayer()  async {
-    _controller = VideoPlayerController.file(File(widget.videoPath));
-
-    await _controller.initialize();
-    await _controller.setLooping(true);
-    await _controller.play();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Preview'),
-        elevation: 0,
-        backgroundColor: Colors.black26,
-        actions: [
-          IconButton(onPressed: () {
-          }, icon: const Icon(Icons.check))
-        ],
-      ),
-      extendBodyBehindAppBar: true,
-      body: FutureBuilder(
-        future: _initVideoPlayer(),
-        builder: (context, state) {
-          if(state.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            return VideoPlayer(_controller);
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          GallerySaver.saveVideo(widget.videoPath);
-          sl.get<VideoLogService>().addVideoLogRecord(widget.videoPath, DateTime.now());
-        },
-        child: const Icon(Icons.save)
-      ),
-    );
-
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-}
-

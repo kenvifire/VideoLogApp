@@ -10,4 +10,8 @@ class CameraService {
    CameraDescription getFirstCamera() {
       return cameras.first;
    }
+
+   List<CameraDescription> getAvailableCameras() {
+      return cameras;
+   }
 }

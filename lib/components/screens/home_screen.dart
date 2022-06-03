@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_video_log/components/screens/camera_home_screen.dart';
 import 'package:my_video_log/components/screens/capture_video_screen.dart';
 import 'package:my_video_log/components/tabs/calender_tab.dart';
 import 'package:my_video_log/components/tabs/settings_tab.dart';
@@ -27,7 +28,8 @@ class HomeScreen extends StatelessWidget {
           body: TabBarView(
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              CaptureVideoScreen(camera: sl.get<CameraService>().getFirstCamera()),
+              // CaptureVideoScreen(camera: sl.get<CameraService>().getFirstCamera()),
+              const CameraExampleHome(),
               const CalenderTab(),
               SettingsTab(user: sl.get<UserService>().getUser()!),
             ],
