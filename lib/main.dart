@@ -8,6 +8,7 @@ import 'package:my_video_log/components/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_video_log/service/camera_service.dart';
+import 'package:my_video_log/service/user_preference_service.dart';
 import 'package:my_video_log/service/user_service.dart';
 import 'package:my_video_log/service/video_log_service.dart';
 
@@ -49,4 +50,5 @@ void setup() {
   sl.registerSingleton<UserService>(UserService());
   sl.registerSingleton<CameraService>(CameraService());
   sl.registerSingleton<VideoLogService>(VideoLogService());
+  sl.registerSingleton<UserPreferenceService>(UserPreferenceService());
 }

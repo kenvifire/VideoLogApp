@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_video_log/service/user_preference_service.dart';
 import 'package:my_video_log/service/video_log_service.dart';
 import 'dart:io';
 import 'package:video_player/video_player.dart';
@@ -7,10 +8,11 @@ import 'package:get_it/get_it.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
-  final String videoPath;
+  final String? videoPath;
   final bool canSave;
+  final String? videoUrl;
 
-  const VideoPlayerScreen({Key? key, required this.videoPath, required this.canSave }) : super(key: key);
+  const VideoPlayerScreen({Key? key, this.videoPath, this.videoUrl, required this.canSave }) : super(key: key);
 
 
   @override
@@ -31,7 +33,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   }
 
   Future _initVideoPlayer()  async {
-    _controller = VideoPlayerController.file(File(widget.videoPath));
+    if(widget.videoPath != null) {
+      _controller = VideoPlayerController.file(File(widget.videoPath!));
+    } else {
+      _controller = VideoPlayerController.network(widget.videoUrl!);
+    }
 
     _flickManager = FlickManager(videoPlayerController: _controller);
     // await _controller.initialize();
@@ -66,8 +72,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       ),
       floatingActionButton: widget.canSave ? FloatingActionButton(
           onPressed: () {
-            GallerySaver.saveVideo(widget.videoPath);
-            sl.get<VideoLogService>().addVideoLogRecord(widget.videoPath, DateTime.now());
+            GallerySaver.saveVideo(widget.videoPath!);
+            sl.get<VideoLogService>().addVideoLogRecord(widget.videoPath!, DateTime.now(),
+                uploadToCloud: sl.get<UserPreferenceService>().getSave2Cloud());
           },
           child: const Icon(Icons.save)
       ) : null,

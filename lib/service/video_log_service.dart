@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -8,6 +9,7 @@ import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
+import 'package:path/path.dart';
 
 class VideoLogService {
   final _storageRef = FirebaseStorage.instance.ref();
@@ -23,16 +25,33 @@ class VideoLogService {
     );
   }
 
-  Future<String?> upload(Uint8List data, String file) async {
+  Future<String?> upload(Uint8List data, String dir, String file) async {
     try {
       final uid = _sl.get<UserService>().getUser()!.uid;
-      final imgRef = _storageRef.child('thumbnails/$uid/$file');
+      final imgRef = _storageRef.child('$dir/$uid/$file');
       await imgRef.putData(data);
       String url = await imgRef.getDownloadURL();
       return url;
     } catch(e) {
       if (kDebugMode) {
         print("upload error");
+        print(e);
+      }
+
+    }
+    return null;
+  }
+
+  Future<String?> uploadFile(String filePath, String dir, String fileName) async {
+    try {
+      final uid = _sl.get<UserService>().getUser()!.uid;
+      final videoRef = _storageRef.child('$dir/$uid/$fileName');
+      await videoRef.putFile(File(filePath));
+      String url = await videoRef.getDownloadURL();
+      return url;
+    } catch(e) {
+      if (kDebugMode) {
+        print("upload video error");
         print(e);
       }
 
@@ -50,10 +69,14 @@ class VideoLogService {
     }
   }
 
-  addVideoLogRecord(String videoPath, DateTime date) async {
+  addVideoLogRecord(String videoPath, DateTime date, {bool uploadToCloud = false}) async {
       Uint8List? thumbnail = await getThumbnail(videoPath);
       String id = const Uuid().v4();
-      String? downloadUrl = await upload(thumbnail!, "$id.jpeg");
+      String? downloadUrl = await upload(thumbnail!,"thumbnails", "$id.jpeg");
+      String? videoUrl ;
+      if(uploadToCloud) {
+        videoUrl= await uploadFile(videoPath, "videos", basename(videoPath));
+      }
 
       final uid = _sl.get<UserService>().getUser()!.uid;
       final record = <String, dynamic> {
@@ -62,6 +85,7 @@ class VideoLogService {
         "downloadUrl": downloadUrl!,
         "date": date,
         "videoPath": videoPath,
+        "videoUrl": videoUrl,
       };
       try {
         _db.collection('video_logs/').doc(uid).update(
@@ -105,7 +129,9 @@ class VideoLogService {
     final videoLogs = data.data() as Map<String, dynamic>;
 
     final records = videoLogs['logs'] as List<dynamic>;
-    return records.map((e) => LogRecord(e['id'], e['date'].toDate(), e['videoPath'], e['downloadUrl'])).toList();
+    return records.map((e) => LogRecord(id: e['id'], date: e['date'].toDate(), videoPath: e['videoPath'],
+        thumbnailUrl: e['downloadUrl'],
+        videoUrl : e['videoUrl'])).toList();
   }
 
 }

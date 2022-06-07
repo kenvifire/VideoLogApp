@@ -9,11 +9,12 @@ class CalendarView extends StatelessWidget {
   final _sl = GetIt.instance;
   final String name;
   final String thumbnail;
-  final String videoPath;
+  final String? videoPath;
+  final String? videoUrl;
   final String id;
-  Function onRemove;
+  final Function onRemove;
 
-  CalendarView(this.id, this.name, this.thumbnail, this.videoPath, this.onRemove, {Key? key }): super(key: key);
+  CalendarView({required this.id, required this.name, required this.thumbnail, this.videoPath, required this.onRemove, Key? key, this.videoUrl }): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,8 @@ class CalendarView extends StatelessWidget {
                 MaterialPageRoute(builder: (context) =>
                     VideoPlayerScreen(
                         videoPath: videoPath,
-                      canSave: false,
+                        videoUrl: videoUrl,
+                        canSave: false,
                     ))
             );
           },

@@ -38,11 +38,13 @@ class _CalenderTabState extends State<CalenderTab> {
         itemCount: snapshot.data.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: CalendarView(snapshot.data[index].id,
-                snapshot.data[index].date.toString(),
-                snapshot.data[index].thumbnailUrl,
-                snapshot.data[index].videoPath,
-              _pullRefresh,
+            title: CalendarView(
+              id: snapshot.data[index].id,
+               name: snapshot.data[index].date.toString(),
+               thumbnail: snapshot.data[index].thumbnailUrl,
+              videoPath: snapshot.data[index].videoPath,
+              videoUrl: snapshot.data[index].videoUrl,
+              onRemove: _pullRefresh,
             ),
 
           );
