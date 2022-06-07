@@ -49,6 +49,7 @@ dev_dependencies:
   camera: ^0.9.4+21
   path_provider: ^2.0.9
   video_player: ^2.4.0
+  flick_video_player: ^0.3.1
   animated_text_kit: ^4.2.1
   firebase_core: ^1.15.0
   firebase_auth: ^3.3.15

@@ -3,6 +3,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_video_log/service/video_log_service.dart';
 
+import '../screens/video_player_screen.dart';
+
 class CalendarView extends StatelessWidget {
   final _sl = GetIt.instance;
   final String name;
@@ -40,12 +42,28 @@ class CalendarView extends StatelessWidget {
             )
           ],
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(name),
-            Image.network(thumbnail)
-          ],
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) =>
+                    VideoPlayerScreen(
+                        videoPath: videoPath,
+                      canSave: false,
+                    ))
+            );
+          },
+          child: Ink(
+            color: Colors.amberAccent,
+
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+              children: [
+                Text(name),
+                Image.network(thumbnail)
+              ],
+            ),
+          ),
         )
       );
   }

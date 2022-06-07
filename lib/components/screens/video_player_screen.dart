@@ -4,11 +4,13 @@ import 'dart:io';
 import 'package:video_player/video_player.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flick_video_player/flick_video_player.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final String videoPath;
+  final bool canSave;
 
-  const VideoPlayerScreen({Key? key, required this.videoPath}) : super(key: key);
+  const VideoPlayerScreen({Key? key, required this.videoPath, required this.canSave }) : super(key: key);
 
 
   @override
@@ -20,6 +22,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   final sl = GetIt.instance;
   late VideoPlayerController _controller;
+  late FlickManager _flickManager;
 
   @override
   void initState() {
@@ -30,9 +33,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Future _initVideoPlayer()  async {
     _controller = VideoPlayerController.file(File(widget.videoPath));
 
-    await _controller.initialize();
-    await _controller.setLooping(true);
-    await _controller.play();
+    _flickManager = FlickManager(videoPlayerController: _controller);
+    // await _controller.initialize();
+    // await _controller.setLooping(true);
+    // await _controller.play();
   }
 
   @override
@@ -54,24 +58,33 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           if(state.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            return VideoPlayer(_controller);
+            return FlickVideoPlayer(
+              flickManager: _flickManager,
+            );
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: widget.canSave ? FloatingActionButton(
           onPressed: () {
             GallerySaver.saveVideo(widget.videoPath);
             sl.get<VideoLogService>().addVideoLogRecord(widget.videoPath, DateTime.now());
           },
           child: const Icon(Icons.save)
-      ),
+      ) : null,
     );
 
   }
 
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    _controller.pause();
+  }
+
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
+    _flickManager.dispose();
   }
 }

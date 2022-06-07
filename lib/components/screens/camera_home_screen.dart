@@ -835,10 +835,10 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) =>
                 VideoPlayerScreen(
-                    videoPath: file.path
+                    videoPath: file.path,
+                  canSave: true,
                 ))
         );
-        _startVideoPlayer();
       }
     });
   }

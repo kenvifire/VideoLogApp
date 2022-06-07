@@ -69,7 +69,8 @@ class CaptureVideoState extends State<CaptureVideoScreen> {
               await Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) =>
                       VideoPlayerScreen(
-                          videoPath: file.path
+                          videoPath: file.path,
+                        canSave: true,
                       ))
               );
             }
