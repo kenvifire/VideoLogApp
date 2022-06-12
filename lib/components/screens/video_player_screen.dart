@@ -59,7 +59,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       ),
       extendBodyBehindAppBar: true,
       body: FutureBuilder(
-        future: _initVideoPlayer(),
+      future: _initVideoPlayer(),
         builder: (context, state) {
           if(state.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -71,10 +71,10 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         },
       ),
       floatingActionButton: widget.canSave ? FloatingActionButton(
-          onPressed: () {
+          onPressed: () async {
             GallerySaver.saveVideo(widget.videoPath!);
             sl.get<VideoLogService>().addVideoLogRecord(widget.videoPath!, DateTime.now(),
-                uploadToCloud: sl.get<UserPreferenceService>().getSave2Cloud());
+                uploadToCloud: (await sl.get<UserPreferenceService>().getUserPreference()).saveToCloud);
           },
           child: const Icon(Icons.save)
       ) : null,

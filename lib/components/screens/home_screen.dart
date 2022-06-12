@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:my_video_log/components/domains/user_preference.dart';
 import 'package:my_video_log/components/screens/camera_home_screen.dart';
 import 'package:my_video_log/components/screens/capture_video_screen.dart';
 import 'package:my_video_log/components/tabs/calender_tab.dart';
 import 'package:my_video_log/components/tabs/settings_tab.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_video_log/service/camera_service.dart';
+import 'package:my_video_log/service/user_preference_service.dart';
 import 'package:my_video_log/service/user_service.dart';
 
 final sl = GetIt.instance;
@@ -25,19 +27,20 @@ class HomeScreen extends StatelessWidget {
             automaticallyImplyLeading: false,
           ),
           bottomNavigationBar: menu(),
-          body: TabBarView(
-            physics: const NeverScrollableScrollPhysics(),
+          body: const TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
-              // CaptureVideoScreen(camera: sl.get<CameraService>().getFirstCamera()),
-              const CameraExampleHome(),
-              const CalenderTab(),
-              SettingsTab(user: sl.get<UserService>().getUser()!),
+              CameraExampleHome(),
+              CalenderTab(),
+              SettingsTab(),
             ],
           ),
 
         ),
       );
   }
+
+
 
   Widget menu() {
     return Container(

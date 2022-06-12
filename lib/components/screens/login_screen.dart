@@ -6,6 +6,7 @@ import 'package:my_video_log/components/buttons/rounded_button.dart';
 import 'package:my_video_log/components/screens/home_screen.dart';
 import 'package:my_video_log/constants.dart';
 import 'package:get_it/get_it.dart';
+import 'package:my_video_log/service/user_preference_service.dart';
 import 'package:my_video_log/service/video_log_service.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -96,10 +97,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 });
 
                 try {
-                  final user = await _auth.signInWithEmailAndPassword(
+                  await _auth.signInWithEmailAndPassword(
                       email: email, password: password);
 
                   await _sl.get<VideoLogService>().initLogRecord();
+                  await _sl.get<UserPreferenceService>().initUserPreference();
 
                   Navigator.pushNamed(context, HomeScreen.id);
                   setState(() {
