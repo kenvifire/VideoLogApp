@@ -35,17 +35,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   gallery_saver: ^2.3.2
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
-  flutter_lints: ^1.0.0
   camera: ^0.9.4+21
   path_provider: ^2.0.9
   video_player: ^2.4.0
@@ -62,7 +51,17 @@ dev_dependencies:
   flutter_slidable: 1.3.0
   shared_preferences: 2.0.15
 
-
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  test: ^1.21.1
+  mockito: ^5.2.0
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
