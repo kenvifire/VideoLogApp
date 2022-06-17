@@ -19,54 +19,54 @@ class CalendarView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-      Slidable(
-        key: UniqueKey(),
-        endActionPane: ActionPane(
-          motion: const ScrollMotion(),
+      SizedBox(
+        height: 80,
+        child: Slidable(
+          key: UniqueKey(),
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
 
-          children: [
-            SlidableAction(
-              autoClose: false,
-              onPressed: delete,
-              backgroundColor: const Color(0xFFFE4A49),
-              foregroundColor: Colors.white,
-              icon: Icons.delete,
-              label: 'Delete',
+            children: [
+              SlidableAction(
+                autoClose: false,
+                onPressed: delete,
+                backgroundColor: const Color(0xFFFE4A49),
+                foregroundColor: Colors.white,
+                icon: Icons.delete,
+                label: 'Delete',
 
-            ),
-            SlidableAction(
-              onPressed: doNothing,
-              backgroundColor: const Color(0xFF21B7CA),
-              foregroundColor: Colors.white,
-              icon: Icons.share,
-              label: 'Share',
-            )
-          ],
-        ),
-        child: InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) =>
-                    VideoPlayerScreen(
-                        videoPath: videoPath,
-                        videoUrl: videoUrl,
-                        canSave: false,
-                    ))
-            );
-          },
-          child: Ink(
-            color: Colors.amberAccent,
-
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-              children: [
-                Text(name),
-                Image.network(thumbnail)
-              ],
-            ),
+              ),
+              SlidableAction(
+                onPressed: doNothing,
+                backgroundColor: const Color(0xFF21B7CA),
+                foregroundColor: Colors.white,
+                icon: Icons.share,
+                label: 'Share',
+              )
+            ],
           ),
-        )
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) =>
+                      VideoPlayerScreen(
+                          videoPath: videoPath,
+                          videoUrl: videoUrl,
+                          canSave: false,
+                      ))
+              );
+            },
+            child: Ink(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(name),
+                  Image.network(thumbnail)
+                ],
+              ),
+            ),
+          )
+        ),
       );
   }
   void doNothing(BuildContext buildContext){}

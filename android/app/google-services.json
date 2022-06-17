@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "888855863447",
+    "project_id": "videolog-23d84",
+    "storage_bucket": "videolog-23d84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888855863447:android:124a015b40820b9dfd49d2",
+        "android_client_info": {
+          "package_name": "com.itluobo.videologapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "888855863447-56vdt0cpjkjpl9q3fnp4npe6dco08h1h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwHXCZu0J1y_biCnpYNHkNUZuPAT0uZAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "888855863447-56vdt0cpjkjpl9q3fnp4npe6dco08h1h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "888855863447-c8hcjmmnqthek96uisvlv48qd4hv6t8s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.itluobo.videolog"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -26,7 +26,8 @@ class _CalenderTabState extends State<CalenderTab> {
     return FutureBuilder<List<LogRecord>>(future: _sl.get<VideoLogService>().loadRecords(),
         builder:(context , snapshot) {
             return RefreshIndicator(
-              child: _listView(snapshot),
+              child: Container(
+                  child: _listView(snapshot)),
               onRefresh: _pullRefresh
             );
         });
