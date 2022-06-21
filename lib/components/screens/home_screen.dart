@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_video_log/components/domains/user_preference.dart';
 import 'package:my_video_log/components/screens/camera_home_screen.dart';
-import 'package:my_video_log/components/screens/capture_video_screen.dart';
 import 'package:my_video_log/components/tabs/calender_tab.dart';
 import 'package:my_video_log/components/tabs/settings_tab.dart';
 import 'package:get_it/get_it.dart';
-import 'package:my_video_log/service/camera_service.dart';
-import 'package:my_video_log/service/user_preference_service.dart';
-import 'package:my_video_log/service/user_service.dart';
 
 final sl = GetIt.instance;
 
@@ -22,11 +17,12 @@ class HomeScreen extends StatelessWidget {
 
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.blueAccent,
-            title: const Text("My Vide Logs"),
+
+            title: const Text("My Vide Logs",),
+            centerTitle: true,
             automaticallyImplyLeading: false,
           ),
-          bottomNavigationBar: menu(),
+          bottomNavigationBar: menu(context),
           body: const TabBarView(
             physics: NeverScrollableScrollPhysics(),
             children: [
@@ -40,17 +36,15 @@ class HomeScreen extends StatelessWidget {
       );
   }
 
-
-
-  Widget menu() {
+  Widget menu(BuildContext context) {
     return Container(
-      color: Colors.blueAccent,
+      color: Theme.of(context).primaryColor,
       child: const TabBar(
-        labelColor: Colors.white,
-        unselectedLabelColor: Colors.white70,
+        // labelColor: Colors.white,
+        // unselectedLabelColor: Colors.white70,
         indicatorSize: TabBarIndicatorSize.tab,
         indicatorPadding: EdgeInsets.all(5.0),
-        indicatorColor: Colors.blue,
+        // indicatorColor: Colors.blue,
         tabs: [
           Tab(
             text: "New Video",

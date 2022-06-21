@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:my_video_log/components/screens/video_player_screen.dart';
 import 'dart:async';
-import 'package:get_it/get_it.dart';
 
 class CaptureVideoScreen extends StatefulWidget {
   static String id = "capture_video_screen";

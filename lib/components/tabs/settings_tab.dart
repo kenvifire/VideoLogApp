@@ -29,7 +29,6 @@ class _SettingsTabState extends State<SettingsTab> {
             }),
         RoundedButton(
           title: 'Sign Out',
-          color: Colors.blueAccent,
           onPressed: () {
             _sl.get<UserService>().signOut();
             Navigator.of(context).pushNamed(WelcomeScreen.id);
@@ -59,8 +58,8 @@ class _SettingsTabState extends State<SettingsTab> {
                     _saveToCloud = value;
                   });
                 },
-                activeColor: Colors.yellowAccent,
-                inactiveThumbColor: Colors.blueGrey,
+                // activeColor: Colors.yellowAccent,
+                // inactiveThumbColor: Colors.blueGrey,
               ),
             ],
           ),

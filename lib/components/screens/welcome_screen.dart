@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import '../buttons/rounded_button.dart';
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:my_video_log/components/screens/login_screen.dart';
 import 'package:my_video_log/components/screens/registration_screen.dart';
-import 'package:get_it/get_it.dart';
+
+import '../buttons/rounded_button.dart';
 
 final sl = GetIt.instance;
 class WelcomeScreen extends StatefulWidget {
@@ -20,7 +21,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -28,6 +28,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Hero(
                   tag: 'logo',
@@ -39,37 +40,31 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 AnimatedTextKit(animatedTexts: [
                   TypewriterAnimatedText(
                     'My Video Logs',
-                    textStyle: const TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.black,
+                    textStyle: TextStyle(
+                      fontSize: Theme.of(context).textTheme.headline5?.fontSize,
+                      fontWeight: Theme.of(context).textTheme.headline5?.fontWeight
                     ),
                     speed: const Duration(milliseconds: 200),
                   )
                 ],
                   pause: const Duration(milliseconds: 1000),
                 ),
-                // Text(
-                // 'Flash Chat',
-                //      style: TextStyle(
-                //        fontSize: 45.0,
-                //        fontWeight: FontWeight.w900,
-                //        color: Colors.red
-                //      ),
-                // ),
               ],
             ),
             const SizedBox(
               height: 48.0,
             ),
-            RoundedButton(title: 'Login', color: Colors.lightBlue,
-            onPressed: () {
-              Navigator.pushNamed(context, LoginScreen.id);
-            },),
-            RoundedButton(title: 'Register', color: Colors.blueAccent,
-            onPressed: () { 
-              Navigator.pushNamed(context, RegistrationScreen.id);
-            },),
+            RoundedButton(
+              title: 'Login',
+              onPressed: () {
+                Navigator.pushNamed(context, LoginScreen.id);
+              },
+            ),
+            RoundedButton(
+              title: 'Register',
+              onPressed: () {
+                Navigator.pushNamed(context, RegistrationScreen.id);
+              },),
           ],
         ),
       ),

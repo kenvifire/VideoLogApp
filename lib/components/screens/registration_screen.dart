@@ -26,7 +26,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Padding(
@@ -35,22 +34,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              SizedBox(
-                height: 180.0,
-                child: Image.asset('images/logo.png'),
+              Flexible(
+                child: Hero(
+                  tag: 'logo',
+                  child: SizedBox(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 48.0,
               ),
               TextField(
                 keyboardType: TextInputType.emailAddress,
-                textAlign: TextAlign.center,
                 onChanged: (value) {
                   email = value;
                 },
-                style: const TextStyle(
-                    color: Colors.black
-                ),
                 decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
               ),
               const SizedBox(
@@ -61,9 +61,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 onChanged: (value) {
                   password = value;
                 },
-                style: const TextStyle(
-                  color: Colors.black
-                ),
+
                 decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password'),
               ),
               Text(errMsg, style: const TextStyle(
@@ -99,7 +97,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 }
               }),
               const SizedBox(height: 4.0,),
-              RoundedButton(title: 'Back', color: Colors.blueAccent, onPressed: () {
+              RoundedButton(title: 'Back',  onPressed: () {
                 Navigator.of(context).pop();
               })
             ],

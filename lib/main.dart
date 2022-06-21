@@ -11,6 +11,7 @@ import 'package:my_video_log/service/camera_service.dart';
 import 'package:my_video_log/service/user_preference_service.dart';
 import 'package:my_video_log/service/user_service.dart';
 import 'package:my_video_log/service/video_log_service.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 late List<CameraDescription> cameras;
 late User? user;
@@ -30,11 +31,9 @@ class MyVideLogApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark().copyWith(
-        textTheme: const TextTheme(
-          bodyText1: TextStyle(color: Colors.black54),
-        ),
-      ),
+      theme: FlexThemeData.light(scheme: FlexScheme.deepBlue),
+      darkTheme: FlexThemeData.dark(scheme: FlexScheme.mandyRed),
+      themeMode: ThemeMode.system,
       initialRoute: WelcomeScreen.id,
       routes: {
         WelcomeScreen.id: (context) => const WelcomeScreen(),
