@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:my_video_log/components/screens/capture_video_screen.dart';
 import 'package:my_video_log/components/buttons/rounded_button.dart';
 import 'package:my_video_log/components/screens/home_screen.dart';
+import 'package:my_video_log/components/screens/reset_password_screen.dart';
 import 'package:my_video_log/constants.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_video_log/service/user_preference_service.dart';
@@ -112,7 +112,10 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 4.0,),
               RoundedButton(title: 'Back', onPressed: () {
                 Navigator.of(context).pop();
-              })
+              }),
+              TextButton(onPressed: (){
+                Navigator.pushNamed(context, ResetPasswordScreen.id);
+              }, child: const Text('Forget password?'))
             ],
           ),
         ),

@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:my_video_log/components/screens/home_screen.dart';
 import 'package:my_video_log/components/screens/login_screen.dart';
 import 'package:my_video_log/components/screens/registration_screen.dart';
+import 'package:my_video_log/components/screens/reset_password_screen.dart';
 import 'package:my_video_log/components/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
@@ -40,6 +41,7 @@ class MyVideLogApp extends StatelessWidget {
         LoginScreen.id: (context) => const LoginScreen(),
         RegistrationScreen.id: (context) => const RegistrationScreen(),
         HomeScreen.id: (context) => const HomeScreen(),
+        ResetPasswordScreen.id: (context) => const ResetPasswordScreen(),
       },
     );
   }
