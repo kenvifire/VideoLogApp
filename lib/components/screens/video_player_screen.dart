@@ -25,10 +25,12 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   final sl = GetIt.instance;
   late VideoPlayerController _controller;
   late FlickManager _flickManager;
+  late bool canSave;
 
   @override
   void initState() {
     super.initState();
+    canSave = widget.canSave;
 
   }
 
@@ -49,13 +51,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Preview'),
         elevation: 0,
-        backgroundColor: Colors.black26,
-        actions: [
-          IconButton(onPressed: () {
-          }, icon: const Icon(Icons.check))
-        ],
       ),
       extendBodyBehindAppBar: true,
       body: FutureBuilder(
@@ -70,11 +68,14 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           }
         },
       ),
-      floatingActionButton: widget.canSave ? FloatingActionButton(
+      floatingActionButton: canSave ? FloatingActionButton(
           onPressed: () async {
             GallerySaver.saveVideo(widget.videoPath!);
             sl.get<VideoLogService>().addVideoLogRecord(widget.videoPath!, DateTime.now(),
                 uploadToCloud: (await sl.get<UserPreferenceService>().getUserPreference()).saveToCloud);
+            setState(() {
+              canSave = false;
+            });
           },
           child: const Icon(Icons.save)
       ) : null,
