@@ -2,22 +2,23 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:get_it/get_it.dart';
 import 'package:my_video_log/components/screens/video_player_screen.dart';
 import 'package:my_video_log/service/camera_service.dart';
 import 'package:video_player/video_player.dart';
-import 'package:get_it/get_it.dart';
 
 /// Camera example home widget.
-class CameraExampleHome extends StatefulWidget {
+class CameraHome extends StatefulWidget {
   /// Default Constructor
-  const CameraExampleHome({Key? key}) : super(key: key);
+  const CameraHome({Key? key}) : super(key: key);
 
   @override
-  State<CameraExampleHome> createState() {
-    return _CameraExampleHomeState();
+  State<CameraHome> createState() {
+    return _CameraHomeState();
   }
 }
 
@@ -43,7 +44,7 @@ void _logError(String code, String? message) {
   }
 }
 
-class _CameraExampleHomeState extends State<CameraExampleHome>
+class _CameraHomeState extends State<CameraHome>
     with WidgetsBindingObserver, TickerProviderStateMixin {
   CameraController? controller;
   XFile? imageFile;
@@ -150,19 +151,20 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
               ),
             ),
           ),
-          _captureControlRowWidget(),
-          _modeControlRowWidget(),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _cameraTogglesRowWidget(),
-                // _thumbnailWidget(),
-              ],
-            ),
+        ExpandablePanel(
+          header: _cameraTogglesRowWidget(),
+          collapsed: _captureControlRowWidget(),
+          expanded: Column(
+            children: [
+              _captureControlRowWidget(),
+              _modeControlRowWidget(),
+            ],
           ),
-        ],
+
+
+
+        ),
+      ],
     );
   }
 
@@ -601,9 +603,18 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
         );
       }
     }
-
-    return Row(children: toggles);
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(children: toggles),
+          // _thumbnailWidget(),
+        ],
+      ),
+    );
   }
+
 
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
 

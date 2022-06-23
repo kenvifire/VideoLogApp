@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
           body: const TabBarView(
             physics: NeverScrollableScrollPhysics(),
             children: [
-              CameraExampleHome(),
+              CameraHome(),
               CalenderTab(),
               SettingsTab(),
             ],
