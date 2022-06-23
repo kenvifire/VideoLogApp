@@ -4,6 +4,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:my_video_log/components/buttons/rounded_button.dart';
 import 'package:my_video_log/components/screens/home_screen.dart';
 import 'package:my_video_log/constants.dart';
+import 'package:get_it/get_it.dart';
+import 'package:my_video_log/service/user_service.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static String id = 'registration_screen';
@@ -19,7 +21,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   late String email;
   late String password;
-  final _auth = FirebaseAuth.instance;
+  final _sl = GetIt.I;
   String errMsg = "";
   bool showSpinner = false;
 
@@ -70,13 +72,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(
                 height: 24.0,
               ),
-              RoundedButton(title: 'Register', color: Colors.blueAccent, onPressed: () async {
+              RoundedButton(title: 'Register', onPressed: () async {
                 setState(() {
                   showSpinner = true;
                 });
                 try {
-                  final newUser = await _auth.createUserWithEmailAndPassword(
-                      email: email, password: password);
+                  await _sl.get<UserService>().createWithEmailAndPassword(email: email, password: password);
                   setState(() {
                     showSpinner = false;
                   });
