@@ -23,6 +23,20 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _auth = FirebaseAuth.instance;
   String errMsg = "";
   bool showSpinner = false;
+  String? emailError;
+  final _controller = TextEditingController();
+
+  _validate() {
+    if(_controller.value.text.isEmpty) {
+      setState(() {
+        emailError = "invalid email";
+      });
+    } else {
+      setState(() {
+        emailError = null;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,11 +62,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 height: 48.0,
               ),
               TextField(
+                controller: _controller,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
                   email = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter your email',
+                    errorText: emailError ?? ""
+                ),
               ),
               Text(errMsg, style: const TextStyle(
                 color: Colors.red
@@ -61,6 +79,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 height: 24.0,
               ),
               RoundedButton(title: 'Reset', onPressed: () async {
+                _validate();
+                if(emailError != null) {
+                  return;
+                }
                 setState(() {
                   showSpinner = true;
                 });

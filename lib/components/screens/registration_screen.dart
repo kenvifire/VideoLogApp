@@ -25,6 +25,38 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String errMsg = "";
   bool showSpinner = false;
 
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _repassController = TextEditingController();
+
+  String? emailError;
+  String? passwordError;
+  String? repasswordError;
+
+  _validate() {
+    _validateEmail();
+    _validatePassword();
+    _validateRepass();
+  }
+
+  _validateEmail() {
+    setState(() {
+      emailError = _emailController.value.text.isEmpty ? 'invalid email' : null;
+    });
+  }
+
+  _validatePassword() {
+      setState(() {
+        passwordError = _passwordController.value.text.isEmpty ? 'invalid password' : null;
+      });
+  }
+
+  _validateRepass() {
+    setState(() {
+      repasswordError = _repassController.value.text != _passwordController.value.text ? 'Password does not match' : null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,35 +81,53 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 height: 48.0,
               ),
               TextField(
+                controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                onChanged: (value) {
-                  email = value;
-                },
-                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter your email',
+                  errorText: emailError ?? ""
+                ),
               ),
               const SizedBox(
                 height: 8.0,
               ),
               TextField(
+                controller: _passwordController,
                 obscureText: true,
-                onChanged: (value) {
-                  password = value;
-                },
-
-                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password'),
+                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password',
+                  errorText: passwordError ?? ""
+                ),
               ),
               Text(errMsg, style: const TextStyle(
                 color: Colors.red
               ),textAlign: TextAlign.center,),
+
+              TextField(
+                controller: _repassController,
+                obscureText: true,
+                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password again',
+                  errorText: repasswordError ?? ""
+                ),
+              ),
+              Text(errMsg, style: const TextStyle(
+                  color: Colors.red
+              ),textAlign: TextAlign.center,),
+
               const SizedBox(
                 height: 24.0,
               ),
               RoundedButton(title: 'Register', onPressed: () async {
+                _validate();
+                if(emailError != null || passwordError != null || repasswordError !=null ) {
+                  return;
+                }
+
                 setState(() {
                   showSpinner = true;
                 });
                 try {
-                  await _sl.get<UserService>().createWithEmailAndPassword(email: email, password: password);
+                  await _sl.get<UserService>().createWithEmailAndPassword(email: _emailController.value.text,
+                      password: _passwordController.value.text);
                   setState(() {
                     showSpinner = false;
                   });
