@@ -6,6 +6,7 @@ import 'package:video_player/video_player.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flick_video_player/flick_video_player.dart';
+import 'dart:io' as io;
 
 class VideoPlayerScreen extends StatefulWidget {
   final String? videoPath;
@@ -35,7 +36,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   }
 
   Future _initVideoPlayer()  async {
-    if(widget.videoPath != null) {
+    if(widget.videoPath != null && await io.File(widget.videoPath!).exists()) {
       _controller = VideoPlayerController.file(File(widget.videoPath!));
     } else {
       _controller = VideoPlayerController.network(widget.videoUrl!);
