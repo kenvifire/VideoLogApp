@@ -10,6 +10,8 @@ import 'package:get_it/get_it.dart';
 import 'package:my_video_log/components/screens/video_player_screen.dart';
 import 'package:my_video_log/service/camera_service.dart';
 import 'package:video_player/video_player.dart';
+import 'package:pausable_timer/pausable_timer.dart';
+import 'package:sprintf/sprintf.dart';
 
 /// Camera example home widget.
 class CameraHome extends StatefulWidget {
@@ -65,6 +67,8 @@ class _CameraHomeState extends State<CameraHome>
   double _maxAvailableZoom = 1.0;
   double _currentScale = 1.0;
   double _baseScale = 1.0;
+  int time = 0;
+  late PausableTimer timer;
 
   // Counting pointers (number of user fingers on screen)
   int _pointers = 0;
@@ -98,6 +102,15 @@ class _CameraHomeState extends State<CameraHome>
       parent: _focusModeControlRowAnimationController,
       curve: Curves.easeInCubic,
     );
+    timer = PausableTimer(const Duration(seconds: 1), ()  {
+        timer.reset();
+        timer.start();
+      //callback
+      setState(() {
+        time = time + 1;
+      });
+    });
+
   }
 
   @override
@@ -105,6 +118,8 @@ class _CameraHomeState extends State<CameraHome>
     _ambiguate(WidgetsBinding.instance)?.removeObserver(this);
     _flashModeControlRowAnimationController.dispose();
     _exposureModeControlRowAnimationController.dispose();
+    time = 0;
+    timer.cancel();
     super.dispose();
   }
 
@@ -580,6 +595,12 @@ class _CameraHomeState extends State<CameraHome>
       onNewCameraSelected(description);
     }
 
+    if(controller != null && controller!.value.isRecordingVideo) {
+        toggles.add(Text(sprintf("Recording %02i:%02i:%02i",[time~/3600,time%3600~/60,time%60]),
+        style: Theme.of(context).textTheme.subtitle2,));
+    }
+
+
     if (_cameras.isEmpty) {
       _ambiguate(SchedulerBinding.instance)?.addPostFrameCallback((_) async {
         showInSnackBar('No camera found.');
@@ -830,6 +851,8 @@ class _CameraHomeState extends State<CameraHome>
     startVideoRecording().then((_) {
       if (mounted) {
         setState(() {});
+        time = 0;
+        timer.start();
       }
     });
   }
@@ -838,6 +861,8 @@ class _CameraHomeState extends State<CameraHome>
     stopVideoRecording().then((XFile? file) {
       if (mounted) {
         setState(() {});
+        time = 0;
+        timer.reset();
       }
       if (file != null) {
         showInSnackBar('Video recorded to ${file.path}');
@@ -877,6 +902,7 @@ class _CameraHomeState extends State<CameraHome>
     pauseVideoRecording().then((_) {
       if (mounted) {
         setState(() {});
+        timer.pause();
       }
       showInSnackBar('Video recording paused');
     });
@@ -886,6 +912,7 @@ class _CameraHomeState extends State<CameraHome>
     resumeVideoRecording().then((_) {
       if (mounted) {
         setState(() {});
+        timer.start();
       }
       showInSnackBar('Video recording resumed');
     });
