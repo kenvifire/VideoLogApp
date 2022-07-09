@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_video_log/components/screens/camera_home_screen.dart';
+import 'package:my_video_log/components/tabs/camera_home_screen.dart';
 import 'package:my_video_log/components/tabs/calender_tab.dart';
 import 'package:my_video_log/components/tabs/settings_tab.dart';
 import 'package:get_it/get_it.dart';
@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
           body: const TabBarView(
             physics: NeverScrollableScrollPhysics(),
             children: [
-              CameraHome(),
+              CameraTab(),
               CalenderTab(),
               SettingsTab(),
             ],

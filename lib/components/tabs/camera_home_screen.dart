@@ -14,13 +14,13 @@ import 'package:pausable_timer/pausable_timer.dart';
 import 'package:sprintf/sprintf.dart';
 
 /// Camera example home widget.
-class CameraHome extends StatefulWidget {
+class CameraTab extends StatefulWidget {
   /// Default Constructor
-  const CameraHome({Key? key}) : super(key: key);
+  const CameraTab({Key? key}) : super(key: key);
 
   @override
-  State<CameraHome> createState() {
-    return _CameraHomeState();
+  State<CameraTab> createState() {
+    return _CameraTabState();
   }
 }
 
@@ -46,7 +46,7 @@ void _logError(String code, String? message) {
   }
 }
 
-class _CameraHomeState extends State<CameraHome>
+class _CameraTabState extends State<CameraTab>
     with WidgetsBindingObserver, TickerProviderStateMixin {
   CameraController? controller;
   XFile? imageFile;
