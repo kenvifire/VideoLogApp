@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_video_log/components/tabs/calender_view_tab.dart';
 import 'package:my_video_log/components/tabs/camera_home_screen.dart';
 import 'package:my_video_log/components/tabs/calender_tab.dart';
 import 'package:my_video_log/components/tabs/settings_tab.dart';
@@ -13,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
+        length: 4,
 
         child: Scaffold(
           appBar: AppBar(
@@ -29,6 +30,7 @@ class HomeScreen extends StatelessWidget {
               CameraTab(),
               CalenderTab(),
               SettingsTab(),
+              CalenderViewTab(),
             ],
           ),
 
@@ -57,6 +59,10 @@ class HomeScreen extends StatelessWidget {
           Tab(
             text: "Settings",
             icon: Icon(Icons.settings),
+          ),
+          Tab(
+            text: 'New Calendar',
+            icon: Icon(Icons.calendar_month),
           )
         ],
       ),

@@ -10,6 +10,8 @@ import 'package:get_it/get_it.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path/path.dart';
+import 'package:collection/collection.dart';
+import 'package:intl/intl.dart';
 
 class VideoLogService {
   final _storageRef = FirebaseStorage.instance.ref();
@@ -132,6 +134,12 @@ class VideoLogService {
     return records.map((e) => LogRecord(id: e['id'], date: e['date'].toDate(), videoPath: e['videoPath'],
         thumbnailUrl: e['downloadUrl'],
         videoUrl : e['videoUrl'])).toList();
+  }
+
+  loadRecordsByDate() async {
+    List<LogRecord> records = await loadRecords();
+    final formatter = DateFormat('yyyy-MM-dd');
+    return groupBy(records, (LogRecord r) => formatter.format(r.date));
   }
 
 }
