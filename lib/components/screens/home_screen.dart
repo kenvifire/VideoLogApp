@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_video_log/components/tabs/calender_view_tab.dart';
 import 'package:my_video_log/components/tabs/camera_home_screen.dart';
-import 'package:my_video_log/components/tabs/calender_tab.dart';
 import 'package:my_video_log/components/tabs/settings_tab.dart';
 import 'package:get_it/get_it.dart';
 
@@ -13,29 +12,32 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 4,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: DefaultTabController(
 
-        child: Scaffold(
-          appBar: AppBar(
+          length: 3,
 
-            title: const Text("My Vide Logs",),
-            centerTitle: true,
-            automaticallyImplyLeading: false,
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text("My Vide Logs",),
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+
+            ),
+            bottomNavigationBar: menu(context),
+            body: const TabBarView(
+              // physics: NeverScrollableScrollPhysics(),
+              children: [
+                CameraTab(),
+                CalenderViewTab(),
+                SettingsTab(),
+              ],
+            ),
+
           ),
-          bottomNavigationBar: menu(context),
-          body: const TabBarView(
-            physics: NeverScrollableScrollPhysics(),
-            children: [
-              CameraTab(),
-              CalenderTab(),
-              SettingsTab(),
-              CalenderViewTab(),
-            ],
-          ),
-
         ),
-      );
+    );
   }
 
   Widget menu(BuildContext context) {
@@ -54,18 +56,15 @@ class HomeScreen extends StatelessWidget {
           ),
           Tab(
             text: "My Videos",
-            icon: Icon(Icons.calendar_today_outlined),
+            icon: Icon(Icons.calendar_month),
           ),
           Tab(
             text: "Settings",
             icon: Icon(Icons.settings),
           ),
-          Tab(
-            text: 'New Calendar',
-            icon: Icon(Icons.calendar_month),
-          )
         ],
       ),
     );
   }
+
 }
