@@ -127,7 +127,9 @@ class _CalenderViewTabState extends State<CalenderViewTab> {
                               thumbnail: value[index].logRecord.thumbnailUrl,
                               videoPath: value[index].logRecord.videoPath,
                               videoUrl: value[index].logRecord.videoUrl,
-                              onRemove: () {}
+                              onRemove: () {
+                                _onRemove(value[index].logRecord.id);
+                              }
                           ),
                           ),
                         );
@@ -150,6 +152,10 @@ class _CalenderViewTabState extends State<CalenderViewTab> {
       }
     );
 
+  }
+
+  _onRemove(String id) {
+    _selectedEvents.value = List.from(_selectedEvents.value)..removeWhere((element) => element.logRecord.id == id);
   }
 
   _loadData() async {

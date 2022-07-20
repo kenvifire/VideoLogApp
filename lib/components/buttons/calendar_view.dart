@@ -22,10 +22,9 @@ class CalendarView extends StatelessWidget {
       SizedBox(
         height: 80,
         child: Slidable(
-          key: UniqueKey(),
+          key: Key(id),
           endActionPane: ActionPane(
             motion: const ScrollMotion(),
-
             children: [
               SlidableAction(
                 autoClose: false,
