@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:my_video_log/components/domains/log_record.dart';
+import 'package:my_video_log/service/remote_service.dart';
 import 'package:my_video_log/service/user_service.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:get_it/get_it.dart';
@@ -13,10 +14,20 @@ import 'package:path/path.dart';
 import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
 
+final _sl = GetIt.instance;
 class VideoLogService {
-  final _storageRef = FirebaseStorage.instance.ref();
-  final _sl = GetIt.instance;
+  final _storage = FirebaseStorage.instance;
+
   final _db = FirebaseFirestore.instance;
+
+  final RemoteService _remoteService =  _sl.get<RemoteService>();
+
+  VideoLogService() {
+    // if(kDebugMode) {
+    //   _db.useFirestoreEmulator("10.0.2.2", 4002);
+    //   _storage.useStorageEmulator("10.0.2.2", 4002);
+    // }
+  }
 
   Future<Uint8List?> getThumbnail(String videoFile) async {
     return await VideoThumbnail.thumbnailData(
@@ -30,7 +41,7 @@ class VideoLogService {
   Future<String?> upload(Uint8List data, String dir, String file) async {
     try {
       final uid = _sl.get<UserService>().getUser()!.uid;
-      final imgRef = _storageRef.child('$dir/$uid/$file');
+      final imgRef = _storage.ref().child('$dir/$uid/$file');
       await imgRef.putData(data);
       String url = await imgRef.getDownloadURL();
       return url;
@@ -47,7 +58,7 @@ class VideoLogService {
   Future<String?> uploadFile(String filePath, String dir, String fileName) async {
     try {
       final uid = _sl.get<UserService>().getUser()!.uid;
-      final videoRef = _storageRef.child('$dir/$uid/$fileName');
+      final videoRef = _storage.ref().child('$dir/$uid/$fileName');
       await videoRef.putFile(File(filePath));
       String url = await videoRef.getDownloadURL();
       return url;
@@ -85,10 +96,12 @@ class VideoLogService {
         "id":id,
         "uid": uid,
         "downloadUrl": downloadUrl!,
-        "date": date,
+        "date": date.toString(),
         "videoPath": videoPath,
         "videoUrl": videoUrl,
+        "videoName": basename(videoPath),
       };
+      _remoteService.addVideoLog(record);
       try {
         _db.collection('video_logs/').doc(uid).update(
           {
@@ -131,7 +144,7 @@ class VideoLogService {
     final videoLogs = data.data() as Map<String, dynamic>;
 
     final records = videoLogs['logs'] as List<dynamic>;
-    return records.map((e) => LogRecord(id: e['id'], date: e['date'].toDate(), videoPath: e['videoPath'],
+    return records.map((e) => LogRecord(id: e['id'], date: e['date'], videoPath: e['videoPath'],
         thumbnailUrl: e['downloadUrl'],
         videoUrl : e['videoUrl'])).toList();
   }
