@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:my_video_log/components/domains/log_record.dart';
+import 'package:my_video_log/components/domains/result.dart';
 import 'package:my_video_log/service/remote_service.dart';
 import 'package:my_video_log/service/user_service.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -82,7 +83,7 @@ class VideoLogService {
     }
   }
 
-  addVideoLogRecord(String videoPath, DateTime date, {bool uploadToCloud = false}) async {
+  Future<Result> addVideoLogRecord(String videoPath, DateTime date, {bool uploadToCloud = false}) async {
       Uint8List? thumbnail = await getThumbnail(videoPath);
       String id = const Uuid().v4();
       String? downloadUrl = await upload(thumbnail!,"thumbnails", "$id.jpeg");
@@ -101,19 +102,7 @@ class VideoLogService {
         "videoUrl": videoUrl,
         "videoName": basename(videoPath),
       };
-      _remoteService.addVideoLog(record);
-      try {
-        _db.collection('video_logs/').doc(uid).update(
-          {
-            "logs": FieldValue.arrayUnion([record])
-          }
-        );
-      } catch(error) {
-        if(kDebugMode) {
-          print("add record error");
-          print(error);
-        }
-      }
+      return _remoteService.addVideoLog(record);
   }
 
   removeRecord(String recordId) async {
