@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:my_video_log/service/user_preference_service.dart';
-import 'package:my_video_log/service/video_log_service.dart';
+import 'package:my_video_log/service/remote_service.dart';
 class UserService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -20,8 +19,8 @@ class UserService {
   }
 
   void initUserData() {
-    _sl.get<VideoLogService>().initLogRecord();
-    _sl.get<UserPreferenceService>().initUserPreference();
+    final uid = _sl.get<UserService>().getUser()!.uid;
+    _sl.get<RemoteService>().initUserData(uid);
   }
 
 

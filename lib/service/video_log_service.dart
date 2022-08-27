@@ -73,15 +73,6 @@ class VideoLogService {
     return null;
   }
 
-  initLogRecord() async {
-    final uid = _sl.get<UserService>().getUser()!.uid;
-    final doc = await _db.collection('video_logs').doc(uid).get();
-    if(doc.data() == null) {
-      _db.collection('video_logs/').doc(uid).set({
-        'logs': []
-      });
-    }
-  }
 
   Future<Result> addVideoLogRecord(String videoPath, DateTime date, {bool uploadToCloud = false}) async {
       Uint8List? thumbnail = await getThumbnail(videoPath);
@@ -97,7 +88,7 @@ class VideoLogService {
         "id":id,
         "uid": uid,
         "downloadUrl": downloadUrl!,
-        "date": date.toString(),
+        "date": date.toUtc().toIso8601String(),
         "videoPath": videoPath,
         "videoUrl": videoUrl,
         "videoName": basename(videoPath),
@@ -106,25 +97,7 @@ class VideoLogService {
   }
 
   removeRecord(String recordId) async {
-    final uid = _sl.get<UserService>().getUser()!.uid;
-
-    final data = await _db.collection('video_logs').doc(uid).get();
-    final videoLogs = data.data() as Map<String, dynamic>;
-
-    final records = videoLogs['logs'] as List<dynamic>;
-    records.removeWhere((element) => element['id'] == recordId);
-    try {
-      _db.collection('video_logs/').doc(uid).update(
-          {
-            'logs': records
-          }
-      );
-    } catch(error) {
-      if(kDebugMode) {
-        print("add record error");
-        print(error);
-      }
-    }
+    _remoteService.removeVideoLog(recordId);
   }
 
   Future<List<LogRecord>> loadRecords() async {
@@ -133,7 +106,7 @@ class VideoLogService {
     final videoLogs = data.data() as Map<String, dynamic>;
 
     final records = videoLogs['logs'] as List<dynamic>;
-    return records.map((e) => LogRecord(id: e['id'], date: e['date'], videoPath: e['videoPath'],
+    return records.map((e) => LogRecord(id: e['id'], date: DateTime.parse(e['date']), videoPath: e['videoPath'],
         thumbnailUrl: e['downloadUrl'],
         videoUrl : e['videoUrl'])).toList();
   }

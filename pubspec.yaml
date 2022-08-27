@@ -55,6 +55,7 @@ dependencies:
   sprintf: ^6.0.0
   table_calendar: ^3.0.6
   cloud_functions: ^3.3.3
+  in_app_purchase: ^3.0.7
 #  ffmpeg_kit_flutter: 4.5.1
 
 

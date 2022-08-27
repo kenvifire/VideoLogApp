@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:my_video_log/components/buttons/rounded_button.dart';
-import 'package:my_video_log/components/screens/home_screen.dart';
-import 'package:my_video_log/components/screens/welcome_screen.dart';
 import 'package:my_video_log/constants.dart';
 
 class ResetPasswordScreen extends StatefulWidget {

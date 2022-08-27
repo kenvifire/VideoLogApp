@@ -1049,7 +1049,7 @@ class _CameraTabState extends State<CameraTab>
         : VideoPlayerController.file(File(videoFile!.path));
 
     videoPlayerListener = () {
-      if (videoController != null && videoController!.value.size != null) {
+      if (videoController != null) {
         // Refreshing the state to update video player with the correct ratio.
         if (mounted) {
           setState(() {});

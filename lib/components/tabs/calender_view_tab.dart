@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:my_video_log/components/domains/log_record.dart';
 import 'package:my_video_log/service/video_log_service.dart';
@@ -141,8 +139,8 @@ class _CalenderViewTabState extends State<CalenderViewTab> {
             ],
           );
         } else if(snapshot.hasError) {
-          return const Center(
-            child: Text("Error loading data"),
+          return Center(
+            child: Text("Error loading data, ${snapshot.error}"),
           );
         } else {
           return const Center(
