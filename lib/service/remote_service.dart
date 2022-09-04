@@ -16,8 +16,8 @@ class RemoteService {
     return remoteCall("initUser");
   }
 
-  Future<Result> upgradeUserPlan(String planName) async {
-    return remoteCall("updateUserPlan", {"planName": planName});
+  Future<Result> upgradeUserPlan(Map<String, String> purchaseDetail) async {
+    return remoteCall("updateUserPlan", purchaseDetail);
   }
 
   Future<Result> remoteCall(String method, [dynamic parameters]) async {

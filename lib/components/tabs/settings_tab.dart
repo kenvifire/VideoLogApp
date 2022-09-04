@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:my_video_log/components/buttons/rounded_button.dart';
 import 'package:my_video_log/components/domains/user_preference.dart';
 import 'package:my_video_log/components/screens/welcome_screen.dart';
+import 'package:my_video_log/service/purchase_service.dart';
 import 'package:my_video_log/service/user_preference_service.dart';
 import 'package:my_video_log/service/user_service.dart';
 
@@ -58,11 +60,25 @@ class _SettingsTabState extends State<SettingsTab> {
                     _saveToCloud = value;
                   });
                 },
-                // activeColor: Colors.yellowAccent,
-                // inactiveThumbColor: Colors.blueGrey,
               ),
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("Upgrade to 5G"),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blue, width: 4),
+                  color: Colors.yellow,
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(onPressed: () async {
+                  List<ProductDetails> products = await _sl.get<PurchaseService>().loadProducts();
+                }, icon: const Icon(Icons.shopping_cart)),
+              )
+            ],
+          )
         ],
       );
     } else if (snapshot.hasError) {
